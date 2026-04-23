@@ -3,6 +3,7 @@ import {AppEvents, EventBus} from '@super-app/core';
 import type {SettingsFailure} from '../../domain/failures';
 import type {SettingsUpdateInput} from '../../application/useCases/UpdateSettingsUseCase';
 import type {SettingsViewModel} from '../../application/viewModels/SettingsViewModel';
+import {SettingsCustomEvents} from '../../domain/events';
 import {container} from '../../di';
 
 export function useSettings() {
@@ -33,7 +34,7 @@ export function useSettings() {
     refresh();
   }, [refresh]);
 
-  const emitIfThemeOrLanguageChanged = useCallback(
+  const emitSettingsChangedEvents = useCallback(
     (prev: SettingsViewModel | null, next: SettingsViewModel) => {
       if (!prev) {
         return;
@@ -45,6 +46,12 @@ export function useSettings() {
         EventBus.emit(AppEvents.SETTINGS_LANGUAGE_CHANGED, {
           language: next.languageCode,
         });
+      }
+      if (next.biometricEnabled !== prev.biometricEnabled) {
+        EventBus.emit<{enabled: boolean}>(
+          SettingsCustomEvents.BIOMETRIC_TOGGLED,
+          {enabled: next.biometricEnabled},
+        );
       }
     },
     [],
@@ -63,13 +70,13 @@ export function useSettings() {
           const prev = settingsRef.current;
           settingsRef.current = next;
           setSettings(next);
-          emitIfThemeOrLanguageChanged(prev, next);
+          emitSettingsChangedEvents(prev, next);
         },
       );
 
       setUpdating(false);
     },
-    [emitIfThemeOrLanguageChanged],
+    [emitSettingsChangedEvents],
   );
 
   const resetToDefaults = useCallback(async () => {
@@ -84,12 +91,12 @@ export function useSettings() {
         const prev = settingsRef.current;
         settingsRef.current = next;
         setSettings(next);
-        emitIfThemeOrLanguageChanged(prev, next);
+        emitSettingsChangedEvents(prev, next);
       },
     );
 
     setUpdating(false);
-  }, [emitIfThemeOrLanguageChanged]);
+  }, [emitSettingsChangedEvents]);
 
   return {
     settings,

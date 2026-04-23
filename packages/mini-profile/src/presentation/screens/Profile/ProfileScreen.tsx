@@ -14,16 +14,14 @@ import {
   Card,
   Section,
   colors,
-  useEventBus,
+  useOn,
   useTranslation,
 } from '@super-app/core';
 import {useProfile} from '../../hooks/useProfile';
 import {darkTheme, createStyles} from './ProfileScreen.styles';
 
-type ThemeChangedPayload = {mode?: 'light' | 'dark'} | undefined;
-
 export function ProfileScreen() {
-  const {user, loading, saving, error, fieldErrors, updateUser} = useProfile();
+  const {user, loading, saving, error, fieldErrors, biometricActive, updateUser} = useProfile();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
@@ -31,13 +29,11 @@ export function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const {t} = useTranslation();
 
-  useEventBus<ThemeChangedPayload>(AppEvents.THEME_CHANGED, payload => {
-    if (payload?.mode === 'dark') {
+  useOn(AppEvents.THEME_CHANGED, payload => {
+    if (payload.mode === 'dark') {
       setIsDarkTheme(true);
-    } else if (payload?.mode === 'light') {
-      setIsDarkTheme(false);
     } else {
-      setIsDarkTheme(prev => !prev);
+      setIsDarkTheme(false);
     }
   });
 
@@ -118,11 +114,27 @@ export function ProfileScreen() {
           <View style={styles.badgeRow}>
             <Badge label="CLEAN ARCHITECTURE" variant="success" />
             <Badge label="EVENT BUS" variant="warning" />
+            <Badge label="REQUEST/RESPONSE" variant="primary" />
           </View>
           <Text style={[styles.demoText, {color: theme.textSecondary}]}>
             {t('profile.architecture_desc')}
           </Text>
         </Card>
+
+        {biometricActive ? (
+          <Card style={[styles.demoCard, {backgroundColor: '#ECFDF5'}]}>
+            <View style={styles.badgeRow}>
+              <Badge label="CUSTOM EVENT" variant="warning" />
+            </View>
+            <Text style={{fontSize: 20, marginTop: 8}}>🔐</Text>
+            <Text style={[styles.demoText, {color: '#065F46', fontWeight: '600'}]}>
+              {t('profile.biometric_active')}
+            </Text>
+            <Text style={[styles.demoText, {color: '#047857', fontSize: 12}]}>
+              {t('profile.biometric_hint')}
+            </Text>
+          </Card>
+        ) : null}
       </Section>
 
       <Section title={t('profile.section_personal')}>

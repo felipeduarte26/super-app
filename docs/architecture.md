@@ -25,7 +25,7 @@ Host App ──────── Orquestra navegação e carrega Mini Apps
     │
     ├── EventBus ── Pub/Sub com singleton global (globalThis fallback)
     ├── AppEvents ── Constantes tipadas de todos os eventos
-    ├── useEventBus ── Hook React para subscrever eventos
+    ├── useOn ── Hook React para subscrever eventos (auto-cleanup)
     ├── Theme ── Paleta de cores centralizada
     ├── Components ── Card, Badge, Section (UI compartilhada)
     ├── HTTP ── HttpClientFactory, FetchHttpClient, IHttpClient (Strategy pattern)
@@ -56,7 +56,7 @@ super_app/
 └── packages/
     ├── core/                               # @super-app/core
     │   └── src/
-    │       ├── event-bus/                  # EventBus, AppEvents, useEventBus
+    │       ├── event-bus/                  # EventBus, AppEvents, useOn, EventPayloadMap
     │       ├── theme/                      # Paleta de cores
     │       ├── components/                 # Card, Badge, Section
     │       ├── http/                       # HttpClientFactory, FetchHttpClient
@@ -95,6 +95,8 @@ super_app/
 
 ## Fluxo de Comunicação
 
+### 1. Fire & Forget — Eventos globais (core)
+
 ```
 ┌──────────────┐    PROFILE_UPDATED     ┌──────────────┐
 │ Mini Profile │ ─────────────────────► │  Mini Home   │
@@ -114,3 +116,36 @@ super_app/
        └──────────────────────────────► Mini Profile
                   { mode: 'dark' }      (aplica dark mode)
 ```
+
+### 2. Fire & Forget — Evento customizado (fora do core)
+
+```
+┌──────────────┐  settings:biometric_toggled  ┌──────────────┐
+│Mini Settings │ ────────────────────────────► │ Mini Profile │
+│              │     { enabled: true }         │              │
+└──────────────┘                               │ Exibe banner │
+                                               │ de segurança │
+                                               └──────────────┘
+```
+
+> O evento `settings:biometric_toggled` **NÃO está no core**. Settings emite uma string,
+> Profile escuta a mesma string. Zero acoplamento.
+
+### 3. Request / Response — Buscar dados de outro módulo
+
+```
+┌──────────────┐                               ┌──────────────┐
+│  Mini Home   │   request('profile:get_      │ Mini Profile │
+│              │    summary', {})               │              │
+│  await ...   │ ─────────────────────────────►│  handle(     │
+│              │                               │   'profile:  │
+│              │  ◄──── { displayName,         │    get_      │
+│              │          email,               │    summary') │
+│  Exibe card  │          avatarInitials }     │              │
+│  com dados   │                               │              │
+└──────────────┘                               └──────────────┘
+```
+
+> Home faz `EventBus.request()` e recebe uma Promise.
+> Profile registra `EventBus.handle()` e retorna os dados.
+> **Zero imports entre módulos.**

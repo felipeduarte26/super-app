@@ -15,6 +15,9 @@ export interface TranslationKeys {
   'home.clean_architecture_desc': string;
   'home.event_bus_desc': string;
   'home.section_notifications': string;
+  'home.section_request_response': string;
+  'home.request_response_desc': string;
+  'home.request_profile_button': string;
 
   // Profile
   'profile.loading': string;
@@ -29,6 +32,8 @@ export interface TranslationKeys {
   'profile.bio_placeholder': string;
   'profile.save': string;
   'profile.member_since': string;
+  'profile.biometric_active': string;
+  'profile.biometric_hint': string;
 
   // Settings
   'settings.title': string;
@@ -65,6 +70,10 @@ const ptBR: TranslationKeys = {
   'home.event_bus_desc':
     'Altere seu nome no Profile e veja o greeting acima mudar via EventBus.',
   'home.section_notifications': 'Notificações',
+  'home.section_request_response': 'Request / Response',
+  'home.request_response_desc':
+    'O Home faz um request ao Profile via EventBus e aguarda a resposta. Nenhum import entre módulos — 100% desacoplado.',
+  'home.request_profile_button': 'Buscar dados do Perfil',
 
   'profile.loading': 'Carregando perfil…',
   'profile.section_profile': 'Mini App: Perfil',
@@ -79,6 +88,9 @@ const ptBR: TranslationKeys = {
   'profile.bio_placeholder': 'Conte um pouco sobre você',
   'profile.save': 'Salvar alterações',
   'profile.member_since': 'Membro desde {date}',
+  'profile.biometric_active': 'Biometria ativada com sucesso!',
+  'profile.biometric_hint':
+    'Evento customizado recebido do Settings (settings:biometric_toggled) — sem registro no core.',
 
   'settings.title': 'Configurações',
   'settings.subtitle': 'Personalize aparência, idioma e privacidade',
@@ -117,6 +129,10 @@ const enUS: TranslationKeys = {
   'home.event_bus_desc':
     'Change your name in Profile and see the greeting above update via EventBus.',
   'home.section_notifications': 'Notifications',
+  'home.section_request_response': 'Request / Response',
+  'home.request_response_desc':
+    'Home sends a request to Profile via EventBus and awaits the response. No imports between modules — 100% decoupled.',
+  'home.request_profile_button': 'Fetch Profile data',
 
   'profile.loading': 'Loading profile…',
   'profile.section_profile': 'Mini App: Profile',
@@ -131,6 +147,9 @@ const enUS: TranslationKeys = {
   'profile.bio_placeholder': 'Tell us a bit about yourself',
   'profile.save': 'Save changes',
   'profile.member_since': 'Member since {date}',
+  'profile.biometric_active': 'Biometrics activated successfully!',
+  'profile.biometric_hint':
+    'Custom event received from Settings (settings:biometric_toggled) — not registered in core.',
 
   'settings.title': 'Settings',
   'settings.subtitle': 'Customize appearance, language and privacy',
@@ -169,6 +188,10 @@ const esES: TranslationKeys = {
   'home.event_bus_desc':
     'Cambia tu nombre en Perfil y ve el saludo arriba cambiar via EventBus.',
   'home.section_notifications': 'Notificaciones',
+  'home.section_request_response': 'Request / Response',
+  'home.request_response_desc':
+    'Home envía una solicitud a Profile via EventBus y espera la respuesta. Sin imports entre módulos — 100% desacoplado.',
+  'home.request_profile_button': 'Obtener datos del Perfil',
 
   'profile.loading': 'Cargando perfil…',
   'profile.section_profile': 'Mini App: Perfil',
@@ -183,6 +206,9 @@ const esES: TranslationKeys = {
   'profile.bio_placeholder': 'Cuéntanos un poco sobre ti',
   'profile.save': 'Guardar cambios',
   'profile.member_since': 'Miembro desde {date}',
+  'profile.biometric_active': '¡Biometría activada con éxito!',
+  'profile.biometric_hint':
+    'Evento personalizado recibido de Settings (settings:biometric_toggled) — sin registro en el core.',
 
   'settings.title': 'Configuración',
   'settings.subtitle': 'Personaliza apariencia, idioma y privacidad',

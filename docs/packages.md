@@ -6,9 +6,11 @@ Pacote **compartilhado por todos os módulos** — é o único que Mini Apps pod
 
 | Export | Descrição |
 | --- | --- |
-| `EventBus` | Singleton Pub/Sub com fallback `globalThis` para multi-repo |
+| `EventBus` | Singleton Pub/Sub com fallback `globalThis` — `emit`, `on`, `request`, `handle` |
 | `AppEvents` | Constantes tipadas de todos os eventos do sistema |
-| `useEventBus` | Hook React — subscribe com auto-cleanup no unmount |
+| `useOn` | Hook React — subscribe evento com auto-cleanup no unmount |
+| `useHandle` | Hook React — registra handler de request/response com auto-cleanup |
+| `EventPayloadMap` | Mapa de tipos — garante type-safety nos eventos globais |
 | `colors` | Paleta de cores centralizada |
 | `Card` | Componente de card com sombra e bordas arredondadas |
 | `Badge` | Badge colorido (primary, success, warning, error) |
@@ -21,15 +23,26 @@ Pacote **compartilhado por todos os módulos** — é o único que Mini Apps pod
 ### Uso em um Mini App
 
 ```typescript
-import { EventBus, AppEvents, useEventBus, Card, Badge, colors } from '@super-app/core';
+import { EventBus, AppEvents, useOn, useHandle } from '@super-app/core';
 
-// Emitir evento
+// ── Fire & Forget ──
 EventBus.emit(AppEvents.PROFILE_UPDATED, { name: 'Felipe' });
 
-// Escutar evento (com auto-cleanup)
-useEventBus(AppEvents.THEME_CHANGED, (payload) => {
-  // Reagir à mudança de tema
+useOn(AppEvents.THEME_CHANGED, payload => {
+  console.log(payload.mode); // 'light' | 'dark' — type-safe
 });
+
+// ── Request / Response ──
+// Registrar handler (quem responde)
+useHandle<{ userId: string }, User>('profile:get_user', async ({ userId }) => {
+  return await fetchUser(userId);
+});
+
+// Fazer request (quem pergunta)
+const user = await EventBus.request<{ userId: string }, User>(
+  'profile:get_user',
+  { userId: '123' },
+);
 ```
 
 ---
@@ -48,9 +61,12 @@ useEventBus(AppEvents.THEME_CHANGED, (payload) => {
 | **Data** | `NotificationApiClient` (mock HTTP), `NotificationRepositoryImpl` |
 | **Presentation** | `HomeScreen` com greeting dinâmico, `NotificationCard`, `useNotifications` hook |
 
-**Eventos:**
+**Eventos globais (core):**
 - **Emite:** `NOTIFICATION_BADGE_CHANGED` — atualiza badge na tab do Host
 - **Escuta:** `PROFILE_UPDATED` — atualiza greeting com o nome do usuário
+
+**Request/Response:**
+- **Request:** `profile:get_summary` — busca resumo do perfil do Mini Profile via `EventBus.request()` e exibe na tela
 
 ---
 
@@ -61,14 +77,20 @@ useEventBus(AppEvents.THEME_CHANGED, (payload) => {
 | Camada | Responsabilidade |
 | --- | --- |
 | **DI** | Instancia `UserApiClient` → `UserRepositoryImpl` → `GetUserUseCase` + `UpdateUserUseCase` |
-| **Domain** | Entity `User`, validações (`validateName`, `validateEmail`, `validateBio`) |
+| **Domain** | Entity `User`, validações (`validateName`, `validateEmail`, `validateBio`), `ProfileCustomEvents` |
 | **Application** | `GetUserUseCase`, `UpdateUserUseCase` (com `UserValidationError`), `UserMapper`, `UserUpdateInput` |
 | **Data** | `UserApiClient` (mock HTTP), `UserRepositoryImpl` |
-| **Presentation** | `ProfileScreen` com formulário editável, `AvatarCircle`, `useProfile` hook |
+| **Presentation** | `ProfileScreen` com formulário editável, banner de biometria, `useProfile` hook |
 
-**Eventos:**
+**Eventos globais (core):**
 - **Emite:** `PROFILE_UPDATED` — quando o usuário salva alterações no nome
 - **Escuta:** `THEME_CHANGED` — aplica dark/light mode recebido do Settings
+
+**Eventos customizados (fora do core):**
+- **Escuta:** `settings:biometric_toggled` — exibe banner de segurança quando biometria é ativada no Settings
+
+**Request/Response:**
+- **Handle:** `profile:get_summary` — responde com `{ displayName, email, avatarInitials }` para qualquer módulo que pergunte
 
 ---
 
@@ -79,12 +101,14 @@ useEventBus(AppEvents.THEME_CHANGED, (payload) => {
 | Camada | Responsabilidade |
 | --- | --- |
 | **DI** | Instancia `SettingsApiClient` → `SettingsRepositoryImpl` → `GetSettingsUseCase` + `UpdateSettingsUseCase` |
-| **Domain** | Entity `AppSettings` (`ThemeMode`, `AppLanguage`), regras (`getDefaultSettings`, `isValidLanguage`, `getAvailableLanguages`) |
+| **Domain** | Entity `AppSettings` (`ThemeMode`, `AppLanguage`), regras, `SettingsCustomEvents` |
 | **Application** | `GetSettingsUseCase`, `UpdateSettingsUseCase` (com `SettingsUpdateInput`), `SettingsMapper`, `SettingsViewModel` (inclui `availableLanguages`) |
 | **Data** | `SettingsApiClient` (mock in-memory), `SettingsRepositoryImpl` |
 | **Presentation** | `SettingsScreen` com toggles e seletor de idioma, `SettingsRow`, `useSettings` hook |
 
-**Eventos:**
+**Eventos globais (core):**
 - **Emite:** `THEME_CHANGED` — quando o toggle de tema muda
 - **Emite:** `SETTINGS_LANGUAGE_CHANGED` — quando o idioma é alterado
-- **Escuta:** Nenhum (é produtor de configurações)
+
+**Eventos customizados (fora do core):**
+- **Emite:** `settings:biometric_toggled` — emite `{ enabled: boolean }` quando o toggle de biometria muda. Profile escuta sem que o evento esteja no core.

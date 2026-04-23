@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   colors,
   AppEvents,
-  useEventBus,
+  useOn,
   useTranslation,
   type TranslationKeys,
 } from '@super-app/core';
@@ -71,12 +71,9 @@ export function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
   const {t} = useTranslation();
 
-  useEventBus<{count: number}>(
-    AppEvents.NOTIFICATION_BADGE_CHANGED,
-    payload => {
-      setBadgeCount(payload.count);
-    },
-  );
+  useOn(AppEvents.NOTIFICATION_BADGE_CHANGED, payload => {
+    setBadgeCount(payload.count);
+  });
 
   const tabs = useMemo(() => {
     return getMiniApps().map(app => ({

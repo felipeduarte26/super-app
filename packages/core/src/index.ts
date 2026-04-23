@@ -1,7 +1,7 @@
 export {EventBus} from './event-bus/EventBus';
 export {AppEvents} from './event-bus/events';
-export type {AppEvent} from './event-bus/events';
-export {useEventBus} from './event-bus/useEventBus';
+export type {AppEvent, EventPayloadMap} from './event-bus/events';
+export {useOn, useHandle} from './event-bus/useEventBus';
 
 export {colors} from './theme';
 

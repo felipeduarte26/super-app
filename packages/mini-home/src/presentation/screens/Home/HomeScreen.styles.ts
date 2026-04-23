@@ -38,4 +38,56 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 8,
   },
+  badgeRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  requestButton: {
+    marginTop: 14,
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  requestButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  summaryCard: {
+    marginTop: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F9FF',
+    borderRadius: 12,
+    padding: 14,
+    gap: 12,
+  },
+  summaryAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  summaryAvatarText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  summaryInfo: {
+    flex: 1,
+  },
+  summaryName: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  summaryEmail: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
 });

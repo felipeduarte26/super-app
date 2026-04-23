@@ -2,7 +2,6 @@
  * Represents the result of an operation that can either
  * be a success or a failure.
  *
- * Inspired by Dart's sealed class Result<E, T>.
  * Provides methods to check the result type, access the values,
  * and fold the result into a single output.
  */

@@ -11,12 +11,9 @@ import SettingsNavigator from '@super-app/mini-settings/src/Navigator';
 import {manifest as settingsManifest} from '@super-app/mini-settings/src/manifest';
 
 export function bootstrapMiniApps(): void {
-  EventBus.on(
-    AppEvents.SETTINGS_LANGUAGE_CHANGED,
-    (payload: {language: AppLocale}) => {
-      I18nStore.setLocale(payload.language);
-    },
-  );
+  EventBus.on(AppEvents.SETTINGS_LANGUAGE_CHANGED, payload => {
+    I18nStore.setLocale(payload.language as AppLocale);
+  });
   registerMiniApp({
     manifest: homeManifest,
     getNavigator: () => HomeNavigator,
