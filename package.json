@@ -2,23 +2,38 @@
   "name": "super_app",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
+    "start:host": "react-native start --port 8081",
+    "start:mini-home": "react-native start --port 9001 --config packages/mini-home/rspack.config.mjs",
+    "start:mini-profile": "react-native start --port 9002 --config packages/mini-profile/rspack.config.mjs",
+    "start:mini-settings": "react-native start --port 9003 --config packages/mini-settings/rspack.config.mjs",
     "test": "jest"
   },
   "dependencies": {
+    "@module-federation/enhanced": "^0.8.9",
+    "@react-navigation/bottom-tabs": "^7.0.0",
+    "@react-navigation/native": "^7.0.0",
+    "@super-app/core": "*",
+    "@super-app/mini-home": "*",
+    "@super-app/mini-profile": "*",
+    "@super-app/mini-settings": "*",
     "react": "19.2.3",
     "react-native": "0.85.2",
-    "@react-native/new-app-screen": "0.85.2",
-    "react-native-safe-area-context": "^5.5.2"
+    "react-native-safe-area-context": "^5.5.2",
+    "react-native-screens": "^4.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
+    "@callstack/repack": "^5.2.5",
     "@react-native-community/cli": "20.1.0",
     "@react-native-community/cli-platform-android": "20.1.0",
     "@react-native-community/cli-platform-ios": "20.1.0",
@@ -27,6 +42,8 @@
     "@react-native/jest-preset": "0.85.2",
     "@react-native/metro-config": "0.85.2",
     "@react-native/typescript-config": "0.85.2",
+    "@rspack/core": "^1.7.8",
+    "@swc/helpers": "^0.5.19",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.2.0",
     "@types/react-test-renderer": "^19.1.0",

@@ -1,7 +1,15 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["jest"]
+    "types": ["jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@super-app/core": ["packages/core/src/index.ts"],
+      "@super-app/core/*": ["packages/core/src/*"],
+      "@super-app/mini-home/*": ["packages/mini-home/*"],
+      "@super-app/mini-profile/*": ["packages/mini-profile/*"],
+      "@super-app/mini-settings/*": ["packages/mini-settings/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["**/node_modules", "**/Pods"]

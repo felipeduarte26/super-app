@@ -1,0 +1,96 @@
+import {StyleSheet} from 'react-native';
+import {colors} from '@super-app/core';
+
+export const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    bottom: 80,
+    right: 16,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.primaryDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    zIndex: 100,
+  },
+  fabText: {
+    fontSize: 22,
+  },
+  panel: {
+    position: 'absolute',
+    bottom: 136,
+    right: 16,
+    left: 16,
+    maxHeight: 340,
+    backgroundColor: '#1F2937',
+    borderRadius: 16,
+    overflow: 'hidden',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    zIndex: 99,
+  },
+  panelHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#374151',
+  },
+  panelTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#F9FAFB',
+  },
+  clearBtn: {
+    fontSize: 13,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  logList: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  emptyText: {
+    color: '#9CA3AF',
+    fontSize: 13,
+    textAlign: 'center',
+    padding: 16,
+  },
+  logItem: {
+    paddingVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#374151',
+  },
+  logRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  logTime: {
+    fontSize: 11,
+    color: '#6B7280',
+    fontVariant: ['tabular-nums'],
+  },
+  logEvent: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#60A5FA',
+  },
+  logPayload: {
+    fontSize: 11,
+    color: '#9CA3AF',
+    marginTop: 2,
+    fontFamily: 'monospace',
+  },
+});
