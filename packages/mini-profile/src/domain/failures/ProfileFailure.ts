@@ -1,7 +1,6 @@
 /**
  * Represents a failure during Profile/User operations.
  *
- * Equivalent to Dart's `sealed class ProfileFailure`.
  */
 export abstract class ProfileFailure {
   abstract readonly code: string;

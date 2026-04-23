@@ -2,7 +2,7 @@
 
 ## Filosofia
 
-Neste projeto, **nenhum Use Case lança exceções**. Toda operação que pode falhar retorna um `Result<T, F>` — um tipo inspirado no padrão **Either** (funcional) e no `sealed class Result` do Dart/Kotlin.
+Neste projeto, **nenhum Use Case lança exceções**. Toda operação que pode falhar retorna um `Result<T, F>` — um tipo inspirado no padrão **Either** (funcional).
 
 Cada Mini App define **suas próprias Failures** no domain, garantindo que erros sejam tipados, explícitos e isolados por feature.
 
@@ -74,7 +74,6 @@ mini-settings/src/domain/failures/
 ### Anatomia de uma Failure
 
 ```typescript
-// Classe base (equivalente ao sealed class do Dart)
 abstract class HomeFailure {
   abstract readonly code: string;
   constructor(readonly message: string = '') {}
@@ -244,25 +243,6 @@ function useProfile() {
   <FlatList data={items} ... />
 )}
 ```
-
----
-
-## Comparação com o Flutter
-
-| Conceito | Flutter (Dart) | React Native (TS) |
-|----------|----------------|-------------------|
-| Failure base | `sealed class BudgetFailure` | `abstract class HomeFailure` |
-| Failure concreta | `final class BudgetServerFailure extends BudgetFailure` | `class HomeServerFailure extends HomeFailure` |
-| BaseRepository | `BaseRepository<F extends Object>` | `BaseRepository<F>` |
-| execute | `execute(onAction: Future, onResponse: fn)` | `execute(onAction: () => Promise, onResponse: fn)` |
-| handleException | `HandleExceptionType<F> get handleException` | `protected abstract handleException: HandleExceptionFn<F>` |
-| Result type | `Result<BudgetFailure, List<Entity>>` | `Result<Entity[], HomeFailure>` |
-| Check success | `result.isSuccess()` | `result.isSuccess()` |
-| Extract data | `result.toSuccess()` | `result.toSuccess()` |
-| Pattern match | `result.fold(onError, onSuccess)` | `result.fold(onFailure, onSuccess)` |
-| Transform | — | `result.map(fn)` / `result.flatMap(fn)` |
-
----
 
 ## Regras de Ouro
 

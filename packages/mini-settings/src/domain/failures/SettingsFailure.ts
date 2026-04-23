@@ -1,7 +1,6 @@
 /**
  * Represents a failure during Settings operations.
  *
- * Equivalent to Dart's `sealed class SettingsFailure`.
  */
 export abstract class SettingsFailure {
   abstract readonly code: string;

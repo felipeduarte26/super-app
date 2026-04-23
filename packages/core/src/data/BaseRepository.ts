@@ -3,14 +3,12 @@ import {Result, Success, Failure} from '../result/Result';
 /**
  * A function that converts an unknown error into a failure of type F.
  *
- * Equivalent to Dart's `HandleExceptionType<F>`.
  */
 export type HandleExceptionFn<F> = (error: unknown) => F;
 
 /**
  * Base class for repositories that centralizes try/catch + error mapping.
  *
- * Equivalent to Dart's `BaseRepository<F extends Object>`.
  *
  * Each concrete repository:
  * 1. Extends `BaseRepository<MyFeatureFailure>`
@@ -44,7 +42,6 @@ export abstract class BaseRepository<F> {
   /**
    * Executes an async action, transforms the result, and catches errors.
    *
-   * Equivalent to Dart's `execute<T, R>({ onAction, onResponse })`.
    *
    * @param onAction  - Async function that fetches raw data (e.g., datasource call)
    * @param onResponse - Transforms the raw result into the desired type

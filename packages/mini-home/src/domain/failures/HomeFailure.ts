@@ -1,7 +1,6 @@
 /**
  * Represents a failure during Home/Notification operations.
  *
- * Equivalent to Dart's `sealed class HomeFailure`.
  * Each subclass maps to a specific error scenario.
  */
 export abstract class HomeFailure {
